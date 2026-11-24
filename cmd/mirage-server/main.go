@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	"mirage/internal/config"
+	"mirage/internal/store"
 	"mirage/internal/web"
 )
 
@@ -50,6 +51,19 @@ func main() {
 	ln, err := net.Listen("tcp", cfg.Addr)
 	if err != nil {
 		logger.Error("listen", "addr", cfg.Addr, "err", err)
+		os.Exit(1)
+	}
+
+	// 数据层：开库 + 把没跑过的迁移按顺序跑掉。
+	// 迁移失败就拒绝启动，不带着半截 schema 继续跑（D20）。
+	st, err := store.Open(context.Background(), cfg.DB)
+	if err != nil {
+		logger.Error("open database", "path", cfg.DB, "err", err)
+		os.Exit(1)
+	}
+	defer st.Close()
+	if err := st.Migrate(context.Background()); err != nil {
+		logger.Error("migrate database", "err", err)
 		os.Exit(1)
 	}
 

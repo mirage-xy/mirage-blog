@@ -18,6 +18,9 @@ import (
 // 同时只有一个写者，多开连接只会排队和互相打断。
 const readPoolSize = 4
 
+// ErrNotFound 表示按唯一键没查到记录，调用方用 errors.Is 判断。
+var ErrNotFound = errors.New("store: not found")
+
 // Store 持有两条独立的连接池，指向同一个数据库文件。
 // 读走 readDB，写走 writeDB——写成两条是为了让「写串行」由连接池保证，
 // 而不是靠事务里排队。

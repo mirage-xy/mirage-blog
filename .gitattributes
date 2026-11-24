@@ -1,0 +1,5 @@
+# 仓库内一律存 LF，工作区也按 LF 检出。
+# 本机 core.autocrlf=true，若不钉死，换机器 clone 后工作区会变成 CRLF，
+# gofmt -l . 会把所有文件报成「需要格式化」。
+* text=auto eol=lf
+*.go text eol=lf

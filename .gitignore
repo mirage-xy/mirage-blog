@@ -1,0 +1,29 @@
+# 构建产物
+/mirage-server
+/bin/
+/dist/
+
+# 数据库（含 WAL / SHM 附属文件）
+*.db
+*.db-wal
+*.db-shm
+
+# 附件原文件
+/uploads/
+
+# 静态资源构建产物（发布时生成，不进版本库）
+/static/public/
+
+# 配置与密钥
+.env
+.env.*
+!.env.example
+
+# 定稿视觉稿（截图和可交互稿，只作实现参考，不进版本库）
+/docs/theme-preview/
+
+# 编辑器与系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
